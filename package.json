@@ -33,7 +33,8 @@
     "build": "webpack --env build",
     "start": "webpack-dev-server --open",
     "dev": "webpack --progress --colors --watch --env dev & npm run start",
-    "tesst": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js",
+    "test": "webpack --env build",
+    "test-local": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js",
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "repository": {
