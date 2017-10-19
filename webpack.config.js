@@ -7,25 +7,19 @@ const path = require('path');
 const env = require('yargs').argv.env; // use --env with webpack 2
 
 const libraryName = '_d3';
-function printDependencies(){
-  console.warn('---------------------------');  
-  console.log(Object.keys(pkg.dependencies));  
-  console.warn('---------------------------');  
-}
-printDependencies();
-
 let outputFile;
+let plugins = [];
+const PORT = 3000;
 if (env === 'build') {
   plugins.push(new UglifyJsPlugin({ minimize: true }));
   outputFile = libraryName + '.min.js';
 } else {
   outputFile = libraryName + '.js';
 }
-const PORT = 3000;
 const config = {
   entry: 
   {
-  	main  :  __dirname + '/src/index.js',
+  	'./lib'  :  __dirname + '/src/dog.js',
   	vendor: ['d3']
   },
   devtool: 'source-map',
@@ -36,7 +30,7 @@ const config = {
      inline: true
   },
   output: {
-    path: __dirname + '/dist/lib',
+    path: path.resolve(__dirname, "./dist"),
     publicPath: '/dist/',
     filename: outputFile,
     library: libraryName,
@@ -62,10 +56,17 @@ const config = {
     extensions: ['.json', '.js']
   },
   plugins: [
+    ...plugins,
     //Finally add this line to bundle the vendor code separately
     new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.min.js'}),
-    new HtmlWebpackPlugin({template: './src/template/*.html'})
+    new HtmlWebpackPlugin({template: './src/template/index.html'})
   ]
 };
 
+function printDependencies(){
+  console.warn('---------------------------');  
+  console.log(Object.keys(pkg.dependencies));  
+  console.warn('---------------------------');  
+}
+printDependencies();
 module.exports = config;

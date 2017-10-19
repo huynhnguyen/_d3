@@ -1,2 +1,2 @@
 "use strict";
-export class Dog = "backmun";
+export const Dog = "backmun";
